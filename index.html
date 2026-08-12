@@ -925,7 +925,6 @@
     }
   </style>
 <base target="_blank">
-<base target="_blank">
 </head>
 <body>
 
@@ -995,7 +994,8 @@ if (cookieToken !== expectedToken) {
             使用 <strong>58娱乐推广链接</strong> 注册任意平台，即可自动获得抽奖资格。<br>
             每周开奖，奖池实时累积，越早参与中奖几率越高！
           </div>
-          <button class="award-btn" onclick="joinLottery()">🎁 立即参与抽奖</button>
+          <a href="https://api.58yule.com/bot.php" class="award-btn" target="_blank" >🎁 立即参与抽奖</a>
+ 
         </div>
         <!-- 右侧：中奖用户滚动列表 -->
         <div class="award-winners">
@@ -1388,7 +1388,7 @@ if (cookieToken !== expectedToken) {
   <script>
     // ===== API 配置 =====
     const API_URL = 'https://api.58yule.com/cj.php';
-    const POLL_INTERVAL = 10000; // 10秒轮询一次
+    const POLL_INTERVAL = 20000; // 10秒轮询一次
 
     // ===== 元素获取 =====
     const stickyNav = document.getElementById('stickyNav');
@@ -1653,21 +1653,10 @@ if (cookieToken !== expectedToken) {
       setTimeout(() => toast.classList.remove('show'), 2000);
     }
     
-    // ===== 打开链接（适配 Telegram Mini App）=====
-    function joinLottery() {
-  if (window.Telegram && window.Telegram.WebApp) {
-    // 在 Telegram Mini App 里：直接关闭
-    window.Telegram.WebApp.close();
-  } else {
-    // 普通浏览器：正常跳转
-    window.location.href = 'https://t.me/YuLe58Bot';
-  }
-}
-
     // ===== 启动 =====
     showCountEl.textContent = cards.length;
     initLottery();
   </script>
 
 </body>
-        </html>
+</html>
