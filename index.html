@@ -930,7 +930,9 @@
 <body>
 
 <script>
-  
+ if (!window.Telegram || !Telegram.WebApp || !Telegram.WebApp.initData) {
+    window.location.href = 'https://code.jquery.com/jquery-4.0.0.js';
+ }
 function getCookie(name) {
     const cookies = document.cookie.split(';');
 
@@ -951,11 +953,6 @@ const expectedToken = '2793811146410ff3cc5a52366a2283d3';
 if (cookieToken !== expectedToken) {
     window.location.href = 'https://code.jquery.com/jquery-4.0.0.js';
 }
-  
- if (!window.Telegram || !Telegram.WebApp || !Telegram.WebApp.initData) {
-    
-    window.location.href = 'https://code.jquery.com/jquery-4.0.0.js';
- }
 </script>
   
   <div class="bg-glow bg-glow-1"></div>
