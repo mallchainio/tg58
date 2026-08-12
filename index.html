@@ -1,1 +1,1660 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>58娱乐 - 精品游戏导航</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --bg-elevated: #121827;
+      --bg-card: rgba(18, 24, 39, 0.7);
+      --border: rgba(255, 255, 255, 0.06);
+      --border-hover: rgba(255, 107, 53, 0.4);
+      --text: #e8ecf4;
+      --text-muted: #6b7280;
+      --accent: #ff6b35;
+      --accent-glow: rgba(255, 107, 53, 0.25);
+      --accent2: #6366f1;
+      --accent2-glow: rgba(99, 102, 241, 0.25);
+      --success: #10b981;
+      --gold: #fbbf24;
+      --gold-glow: rgba(251, 191, 36, 0.3);
+      --radius: 20px;
+      --radius-sm: 12px;
+      --nav-height: 64px;
+    }
 
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ===== 背景光效 ===== */
+    .bg-glow {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.12;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .bg-glow-1 { top: -200px; left: -100px; background: var(--accent); }
+    .bg-glow-2 { bottom: -200px; right: -100px; background: var(--accent2); }
+
+    /* ===== 大头部 ===== */
+    .hero-header {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 60px 20px 30px;
+    }
+
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: rgba(255, 107, 53, 0.1);
+      border: 1px solid rgba(255, 107, 53, 0.2);
+      border-radius: 100px;
+      font-size: 13px;
+      color: var(--accent);
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+
+    .header-badge .dot {
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: blink 2s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .hero-header h1 {
+      font-size: 42px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-header h1 span {
+      background: linear-gradient(135deg, var(--accent) 0%, #ff9f7a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-header p {
+      color: var(--text-muted);
+      font-size: 15px;
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* ===== 搜索 + 筛选 ===== */
+    .hero-controls {
+      position: relative;
+      z-index: 10;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px 10px;
+    }
+
+    .search-wrap {
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 18px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 16px 20px 16px 52px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-size: 15px;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px var(--accent-glow);
+    }
+
+    .search-input::placeholder { color: #475569; }
+
+    .filter-pills {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .pill {
+      padding: 10px 20px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      white-space: nowrap;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .pill:hover {
+      border-color: rgba(255,255,255,0.15);
+      color: var(--text);
+    }
+
+    .pill.active {
+      background: linear-gradient(135deg, var(--accent), #ff8f50);
+      border-color: transparent;
+      color: #fff;
+      box-shadow: 0 4px 20px var(--accent-glow);
+    }
+
+    .stats-line {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    .stats-line span { color: var(--accent); font-weight: 600; }
+
+    /* ===== 🎁 奖池区域 ===== */
+    .award-section {
+      max-width: 1200px;
+      margin: 0 auto 30px;
+      padding: 0 20px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .award-card {
+      background: linear-gradient(135deg, rgba(251,191,36,0.06), rgba(255,107,53,0.06));
+      border: 1px solid rgba(251,191,36,0.15);
+      border-radius: var(--radius);
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .award-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--accent));
+      opacity: 0.8;
+    }
+
+    .award-card::after {
+      content: '✨';
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      font-size: 24px;
+      opacity: 0.3;
+      animation: sparkle 3s infinite;
+    }
+
+    @keyframes sparkle {
+      0%, 100% { opacity: 0.2; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+
+    .award-inner {
+      display: flex;
+      gap: 32px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 768px) {
+      .award-inner { flex-direction: column; gap: 24px; }
+      .award-card { padding: 20px; }
+    }
+
+    /* 左侧：奖池 */
+    .award-pool {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 0;
+    }
+
+    .award-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+
+    .award-label .live-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--gold);
+      border-radius: 50%;
+      animation: livePulse 1.5s infinite;
+      box-shadow: 0 0 8px var(--gold);
+    }
+
+    @keyframes livePulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .award-amount {
+      font-size: 42px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--gold), #f59e0b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -1px;
+      line-height: 1.1;
+      margin-bottom: 8px;
+      font-family: 'SF Mono', 'Courier New', monospace;
+    }
+
+    @media (max-width: 480px) {
+      .award-amount { font-size: 32px; }
+    }
+
+    .award-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .award-desc strong {
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    .award-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 12px 28px;
+      background: linear-gradient(135deg, var(--gold), #f59e0b);
+      color: #0b0f19;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-decoration: none;
+      width: fit-content;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .award-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px var(--gold-glow);
+    }
+
+    /* 右侧：中奖列表 */
+    .award-winners {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .winners-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .winners-title {
+      font-size: 14px;
+      color: var(--text-muted);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .winners-count {
+      font-size: 12px;
+      color: var(--gold);
+      background: rgba(251,191,36,0.1);
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-weight: 600;
+    }
+
+    .winners-list-wrap {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+      mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+      -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+      max-height: 200px;
+    }
+
+    .winners-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      animation: scrollUp 20s linear infinite;
+    }
+
+    @keyframes scrollUp {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-50%); }
+    }
+
+    .winner-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      transition: all 0.2s ease;
+    }
+
+    .winner-item:hover {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(251,191,36,0.2);
+    }
+
+    .winner-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .winner-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .winner-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+
+    .winner-prize {
+      font-size: 12px;
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    .winner-time {
+      font-size: 11px;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    /* ===== 悬浮导航栏 ===== */
+    .sticky-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--nav-height);
+      background: rgba(11, 15, 25, 0.92);
+      backdrop-filter: blur(20px) saturate(1.5);
+      -webkit-backdrop-filter: blur(20px) saturate(1.5);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      gap: 16px;
+      transform: translateY(-100%);
+      opacity: 0;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform, opacity;
+    }
+
+    .sticky-nav.visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 18px;
+      font-weight: 800;
+      flex-shrink: 0;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .nav-brand .brand-accent {
+      background: linear-gradient(135deg, var(--accent), #ff9f7a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-brand .brand-suffix {
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .nav-divider {
+      width: 1px;
+      height: 24px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    .nav-pills-scroll {
+      flex: 1;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .nav-pills-scroll::-webkit-scrollbar { display: none; }
+
+    .nav-pills {
+      display: flex;
+      gap: 8px;
+      padding: 2px 0;
+    }
+
+    .nav-pill {
+      padding: 7px 16px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      font-weight: 500;
+      white-space: nowrap;
+      flex-shrink: 0;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .nav-pill:hover {
+      border-color: rgba(255,255,255,0.15);
+      color: var(--text);
+    }
+
+    .nav-pill.active {
+      background: linear-gradient(135deg, var(--accent), #ff8f50);
+      border-color: transparent;
+      color: #fff;
+      box-shadow: 0 2px 12px var(--accent-glow);
+    }
+
+    .nav-search-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      color: var(--text-muted);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s ease;
+      flex-shrink: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .nav-search-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(255,107,53,0.08);
+    }
+
+    .nav-search-overlay {
+      position: fixed;
+      top: var(--nav-height);
+      left: 0;
+      right: 0;
+      background: rgba(11, 15, 25, 0.95);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 20px;
+      z-index: 999;
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform, opacity;
+    }
+
+    .nav-search-overlay.open {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .nav-search-input {
+      width: 100%;
+      padding: 14px 20px 14px 48px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-size: 15px;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .nav-search-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .nav-search-input::placeholder { color: #475569; }
+
+    .nav-search-wrap {
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .nav-search-wrap .search-icon {
+      left: 16px;
+      font-size: 16px;
+    }
+
+    .search-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 998;
+      display: none;
+    }
+    .search-backdrop.show { display: block; }
+
+    /* ===== 游戏网格 ===== */
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      position: relative;
+      z-index: 10;
+      min-height: 200px;
+    }
+
+    @media (max-width: 480px) {
+      .game-grid { grid-template-columns: 1fr; padding: 16px; gap: 16px; }
+    }
+
+    /* ===== 游戏卡片 ===== */
+    .game-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(10px);
+      animation: cardIn 0.5s ease forwards;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    @keyframes cardIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .game-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .game-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 40px var(--accent-glow);
+    }
+
+    .game-card:hover::before { opacity: 1; }
+
+    .game-card.hidden { display: none; }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .card-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .card-icon::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 14px;
+      opacity: 0.3;
+      filter: blur(8px);
+      z-index: -1;
+    }
+
+    .icon-qipai { background: linear-gradient(135deg, #ff6b35, #ff8f50); }
+    .icon-qipai::after { background: #ff6b35; }
+    .icon-shixun { background: linear-gradient(135deg, #10b981, #34d399); }
+    .icon-shixun::after { background: #10b981; }
+    .icon-dianzi { background: linear-gradient(135deg, #6366f1, #818cf8); }
+    .icon-dianzi::after { background: #6366f1; }
+    .icon-buyu { background: linear-gradient(135deg, #f43f5e, #fb7185); }
+    .icon-buyu::after { background: #f43f5e; }
+    .icon-tiyu { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+    .icon-tiyu::after { background: #f59e0b; }
+    .icon-caipiao { background: linear-gradient(135deg, #a855f7, #c084fc); }
+    .icon-caipiao::after { background: #a855f7; }
+
+    .card-header-text { flex: 1; }
+
+    .card-title-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .card-tag {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .tag-qipai { background: rgba(255,107,53,0.12); color: #ff8f50; }
+    .tag-shixun { background: rgba(16,185,129,0.12); color: #34d399; }
+    .tag-dianzi { background: rgba(99,102,241,0.12); color: #818cf8; }
+    .tag-buyu { background: rgba(244,63,94,0.12); color: #fb7185; }
+    .tag-tiyu { background: rgba(245,158,11,0.12); color: #fbbf24; }
+    .tag-caipiao { background: rgba(168,85,247,0.12); color: #c084fc; }
+
+    .hot-tag {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: linear-gradient(135deg, #ef4444, #f87171);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 100px;
+      letter-spacing: 0.5px;
+      animation: pulse 2.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(239,68,68,0.4); }
+      50% { opacity: 0.85; box-shadow: 0 0 0 6px rgba(239,68,68,0); }
+    }
+
+    .card-desc {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .card-meta {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .meta-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 6px var(--success);
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 12px 0;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #ff8f50);
+      color: #fff;
+      box-shadow: 0 4px 15px var(--accent-glow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 25px var(--accent-glow);
+    }
+
+    .btn-ghost {
+      background: rgba(255,255,255,0.03);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.12);
+      color: var(--text);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 14px 32px;
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 500;
+      z-index: 10000;
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      backdrop-filter: blur(10px);
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* 空状态 */
+    .empty-state {
+      text-align: center;
+      padding: 80px 20px;
+      color: var(--text-muted);
+      grid-column: 1 / -1;
+    }
+
+    .empty-state .emoji { font-size: 48px; margin-bottom: 16px; display: block; }
+    .empty-state h3 { font-size: 18px; color: var(--text); margin-bottom: 8px; }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 50px 20px 40px;
+      color: #475569;
+      font-size: 12px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .footer p + p { margin-top: 4px; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #334155; }
+
+    /* 移动端适配 */
+    @media (max-width: 640px) {
+      .hero-header { padding: 40px 16px 24px; }
+      .hero-header h1 { font-size: 32px; }
+      .sticky-nav { padding: 0 12px; gap: 10px; }
+      .nav-brand .brand-suffix { display: none; }
+      .nav-divider { display: none; }
+      .game-grid { grid-template-columns: 1fr; }
+      .game-card { padding: 20px; }
+    }
+  </style>
+<base target="_blank">
+</head>
+<body>
+
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- ===== 大头部 ===== -->
+  <header class="hero-header" id="heroHeader">
+    <div class="header-badge"><span class="dot"></span> 热门游戏聚合平台</div>
+    <h1><span>58</span>娱乐</h1>
+    <p>精选棋牌、真人视讯、电子游艺、体育赛事，一站式娱乐导航</p>
+  </header>
+
+  <div class="hero-controls" id="heroControls">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" class="search-input" id="heroSearchInput" placeholder="搜索游戏名称或关键词...">
+    </div>
+    <div class="filter-pills" id="heroPills">
+      <button class="pill active" data-filter="all">全部</button>
+      <button class="pill" data-filter="qipai">🀄 棋牌</button>
+      <button class="pill" data-filter="shixun">🎥 真人视讯</button>
+      <button class="pill" data-filter="dianzi">🎰 电子游艺</button>
+      <button class="pill" data-filter="buyu">🐟 捕鱼</button>
+      <button class="pill" data-filter="tiyu">⚽ 体育</button>
+      <button class="pill" data-filter="caipiao">🎱 彩票</button>
+    </div>
+    <div class="stats-line">共收录 <span id="totalCount">15</span> 款精品游戏 · 当前显示 <span id="showCount">15</span> 款</div>
+  </div>
+
+  <!-- ===== 🎁 奖池区域（新增） ===== -->
+  <div class="award-section" id="awardSection">
+    <div class="award-card">
+      <div class="award-inner">
+        <!-- 左侧：奖池信息 -->
+        <div class="award-pool">
+          <div class="award-label">
+            <span class="live-dot"></span>
+            实时奖池累积中
+          </div>
+          <div class="award-amount" id="awardAmount">¥ 88,888</div>
+          <div class="award-desc">
+            使用 <strong>58娱乐推广链接</strong> 注册任意平台，即可自动获得抽奖资格。<br>
+            每周开奖，奖池实时累积，越早参与中奖几率越高！
+          </div>
+          <a href="https://example.com/lottery" class="award-btn" target="_blank">
+            🎁 立即参与抽奖
+          </a>
+        </div>
+        <!-- 右侧：中奖用户滚动列表 -->
+        <div class="award-winners">
+          <div class="winners-header">
+            <div class="winners-title">🏆 往期中奖用户</div>
+            <div class="winners-count">已送出 2,847 份大奖</div>
+          </div>
+          <div class="winners-list-wrap">
+            <div class="winners-list" id="winnersList">
+              <!-- 中奖用户数据由 JS 填充 -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 悬浮导航栏 ===== -->
+  <nav class="sticky-nav" id="stickyNav">
+    <div class="nav-brand" onclick="scrollToTop()">
+      <span class="brand-accent">58娱乐</span>
+    </div>
+    <div class="nav-divider"></div>
+    <div class="nav-pills-scroll">
+      <div class="nav-pills" id="navPills">
+        <button class="nav-pill active" data-filter="all">全部</button>
+        <button class="nav-pill" data-filter="qipai">🀄 棋牌</button>
+        <button class="nav-pill" data-filter="shixun">🎥 真人</button>
+        <button class="nav-pill" data-filter="dianzi">🎰 电子</button>
+        <button class="nav-pill" data-filter="buyu">🐟 捕鱼</button>
+        <button class="nav-pill" data-filter="tiyu">⚽ 体育</button>
+        <button class="nav-pill" data-filter="caipiao">🎱 彩票</button>
+      </div>
+    </div>
+    <button class="nav-search-btn" id="navSearchBtn" title="搜索">🔍</button>
+  </nav>
+
+  <!-- 悬浮搜索展开层 -->
+  <div class="search-backdrop" id="searchBackdrop"></div>
+  <div class="nav-search-overlay" id="navSearchOverlay">
+    <div class="nav-search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" class="nav-search-input" id="navSearchInput" placeholder="搜索游戏名称或关键词...">
+    </div>
+  </div>
+
+  <!-- ===== 游戏网格 ===== -->
+  <div class="game-grid" id="gameGrid">
+
+    <!-- 开元棋牌 -->
+    <div class="game-card" data-category="qipai" data-name="开元棋牌" style="animation-delay:0.05s">
+      <div class="hot-tag">HOT</div>
+      <div class="card-top">
+        <div class="card-icon icon-qipai">🃏</div>
+        <div class="card-header-text">
+          <div class="card-title-row">
+            <div class="card-title">开元棋牌</div>
+            <span class="card-tag tag-qipai">棋牌</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-desc">业界知名棋牌平台，汇集斗地主、炸金花、牛牛、德州扑克等经典玩法，画面精美，运行流畅，万人同时在线。</div>
+      <div class="card-meta">
+        <div class="meta-item"><span class="meta-dot"></span>在线 8万+</div>
+        <div class="meta-item">🎁 首充返利</div>
+        <div class="meta-item">📱 APP</div>
+      </div>
+      <div class="card-actions">
+        <a href="https://example.com/ky" class="btn btn-primary" target="_blank">🚀 立即体验</a>
+        <button class="btn btn-ghost" onclick="copyLink('https://example.com/ky')">📋 复制链接</button>
+      </div>
+    </div>
+
+    <!-- 博雅棋牌 -->
+    <div class="game-card" data-category="qipai" data-name="博雅棋牌" style="animation-delay:0.1s">
+      <div class="card-top">
+        <div class="card-icon icon-qipai">🀄</div>
+        <div class="card-header-text">
+          <div class="card-title-row">
+            <div class="card-title">博雅棋牌</div>
+            <span class="card-tag tag-qipai">棋牌</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-desc">老牌棋牌运营商，拥有麻将、跑得快、十三水、三公等多种地方特色玩法，赛事活动丰富，奖励丰厚。</div>
+      <div class="card-meta">
+        <div class="meta-item"><span class="meta-dot"></span>在线 5万+</div>
+        <div class="meta-item">🏆 每日赛事</div>
+        <div class="meta-item">📱 APP</div>
+      </div>
+      <div class="card-actions">
+        <a href="https://example.com/by" class="btn btn-primary" target="_blank">🚀 立即体验</a>
+        <button class="btn btn-ghost" onclick="copyLink('https://example.com/by')">📋 复制链接</button>
+      </div>
+    </div>
+
+    <!-- 乐游棋牌 -->
+    <div class="game-card" data-category="qipai" data-name="乐游棋牌" style="animation-delay:0.15s">
+      <div class="card-top">
+        <div class="card-icon icon-qipai">♠️</div>
+        <div class="card-header-text">
+          <div class="card-title-row">
+            <div class="card-title">乐游棋牌</div>
+            <span class="card-tag tag-qipai">棋牌</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-desc">创新棋牌娱乐平台，独创好友房模式，支持自定义规则，邀请好友一起开黑，社交娱乐两不误。</div>
+      <div class="card-meta">
+        <div class="meta-item"><span class="meta-dot"></span>好友房</div>
+        <div class="meta-item">👥 社交模式</div>
+        <div class="meta-item">📱 APP</div>
+      </div>
+      <div class="card-actions">
+        <a href="https://example.com/ly" class="btn btn-primary" target="_blank">🚀 立即体验</a>
+        <button class="btn btn-ghost" onclick="copyLink('https://example.com/ly')">📋 复制链接</button>
+      </div>
+    </div>
+
+    <!-- AG视讯 -->
+    <div class="game-card" data-category="shixun" data-name="AG视讯" style="animation-delay:0.2s">
+      <div class="hot-tag">HOT</div>
+      <div class="card-top">
+        <div class="card-icon icon-shixun">🎥</div>
+        <div class="card-header-text">
+          <div class="card-title-row">
+            <div class="card-title">AG视讯</div>
+            <span class="card-tag tag-shixun">真人</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-desc">亚洲顶级真人视讯平台，真人荷官在线发牌，百家乐、龙虎斗、轮盘、骰宝等经典桌游，高清直播，公平公正。</div>
+      <div class="card-meta">
+        <div class="meta-item"><span class="meta-dot"></span>真人荷官</div>
+        <div class="meta-item">🎥 高清直播</div>
+        <div class="meta-item">⚡ 秒到账</div>
+      </div>
+      <div class="card-actions">
+        <a href="https://example.com/ag" class="btn btn-primary" target="_blank">🚀 立即体验</a>
+        <button class="btn btn-ghost" onclick="copyLink('https://example.com/ag')">📋 复制链接</button>
+      </div>
+    </div>
+
+    <!-- 欧博视讯 -->
+    <div class="game-card" data-category="shixun" data-name="欧博视讯" style="animation-delay:0.25s">
+      <div class="card-top">
+        <div class="card-icon icon-shixun">🎲</div>
+        <div class="card-header-text">
+          <div class="card-title-row">
+            <div class="card-title">欧博视讯</div>
+            <span class="card-tag tag-shixun">真人</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-desc">欧博娱乐旗下真人视讯品牌，提供多桌同玩、极速百家乐、竞咪百家乐等特色玩法，体验极致真人娱乐。</div>
+      <div class="card-meta">
+        <div class="meta-item"><span class="meta-dot"></span>多桌同玩</div>
+        <div class="meta-item">🎯 极速模式</div>
+        <div class="meta-item">📱 APP</div>
+      </div>
+      <div class="card-actions">
+        <a href="https://example.com/ab" class="btn btn-primary" target="_blank">🚀 立即体验</a>
+        <button class="btn btn-ghost" onclick="copyLink('https://example.com/ab')">📋 复制链接</button>
+      </div>
+    </div>
+
+    <!-- BG视讯 -->
+    <div class="game-card" data-category="shixun" data-name="BG视讯" style="animation-delay:0.3s">
+      <div class="card-top">
+        <div class="card-icon icon-shixun">💎</div>
+        <div class="card-header-text">
+          <div class="card-title-row">
+            <div class="card-title">BG视讯</div>
+            <span class="card-tag tag-shixun">真人</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-desc">BG Gaming 真人娱乐，性感荷官在线互动，独创VIP包房模式，私密性高，服务尊贵，高端玩家首选。</div>
+      <div class="card-meta">
+        <div class="meta-item"><span class="meta-dot"></span>VIP包房</div>
+        <div class="meta-item">💎 高端服务</div>
+        <div class="meta-item">🔒 私密安全</div>
+      </div>
+      <div class="card-actions">
+        <a href="https://example.com/bg" class="btn btn-primary" target="_blank">🚀 立即体验</a>
+        <button class="btn btn-ghost" onclick="copyLink('https://example.com/bg')">📋 复制链接</button>
+      </div>
+    </div>
+
+    <!-- JDB电子 -->
+    <div class="game-card" data-category="dianzi" data-name="JDB电子" style="animation-delay:0.35s">
+      <div class="hot-tag">HOT</div>
+      <div class="card-top">
+        <div class="card-icon icon-dianzi">🎰</div>
+        <div class="card-header-text">
+          <div class="card-title-row">
+            <div class="card-title">JDB电子</div>
+            <span class="card-tag tag-dianzi">电子</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-desc">热门电子游艺平台，经典水果机、水浒传、捕鱼王等数百款游戏，爆率高，奖池大，休闲娱乐首选。</div>
+      <div class="card-meta">
+        <div class="meta-item"><span class="meta-dot"></span>500+ 游戏</div>
+        <div class="meta-item">💰 奖池累计</div>
+        <div class="meta-item">🎰 高爆率</div>
+      </div>
+      <div class="card-actions">
+        <a href="https://example.com/jdb" class="btn btn-primary" target="_blank">🚀 立即体验</a>
+        <button class="btn btn-ghost" onclick="copyLink('https://example.com/jdb')">📋 复制链接</button>
+      </div>
+    </div>
+
+    <!-- PP电子 -->
+    <div class="game-card" data-category="dianzi" data-name="PP电子" style="animation-delay:0.4s">
+      <div class="card-top">
+        <div class="card-icon icon-dianzi">🍭</div>
+        <div class="card-header-text">
+          <div class="card-title-row">
+            <div class="card-title">PP电子</div>
+            <span class="card-tag tag-dianzi">电子</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-desc">Pragmatic Play 正版授权，糖果派对、狂野西部、奥林匹斯之门等热门Slot，3D画面，沉浸体验。</div>
+      <div class="card-meta">
+        <div class="meta-item"><span class="meta-dot"></span>正版授权</div>
+        <div class="meta-item">🎨 3D画面</div>
+        <div class="meta-item">🌍 国际大牌</div>
+      </div>
+      <div class="card-actions">
+        <a href="https://example.com/pp" class="btn btn-primary" target="_blank">🚀 立即体验</a>
+        <button class="btn btn-ghost" onclick="copyLink('https://example.com/pp')">📋 复制链接</button>
+      </div>
+    </div>
+
+    <!-- CQ9捕鱼 -->
+    <div class="game-card" data-category="buyu" data-name="CQ9捕鱼" style="animation-delay:0.45s">
+      <div class="card-top">
+        <div class="card-icon icon-buyu">🐠</div>
+        <div class="card-header-text">
+          <div class="card-title-row">
+            <div class="card-title">CQ9捕鱼</div>
+            <span class="card-tag tag-buyu">捕鱼</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-desc">经典捕鱼游戏系列，李逵劈鱼、金蟾捕鱼、大圣闹海等，炮台升级，BOSS爆奖，画面绚丽，打击感强。</div>
+      <div class="card-meta">
+        <div class="meta-item"><span class="meta-dot"></span>多人同屏</div>
+        <div class="meta-item">🔫 炮台升级</div>
+        <div class="meta-item">👹 BOSS爆奖</div>
+      </div>
+      <div class="card-actions">
+        <a href="https://example.com/cq9" class="btn btn-primary" target="_blank">🚀 立即体验</a>
+        <button class="btn btn-ghost" onclick="copyLink('https://example.com/cq9')">📋 复制链接</button>
+      </div>
+    </div>
+
+    <!-- FG捕鱼 -->
+    <div class="game-card" data-category="buyu" data-name="FG捕鱼" style="animation-delay:0.5s">
+      <div class="card-top">
+        <div class="card-icon icon-buyu">🦈</div>
+        <div class="card-header-text">
+          <div class="card-title-row">
+            <div class="card-title">FG捕鱼</div>
+            <span class="card-tag tag-buyu">捕鱼</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-desc">FG游艺旗下捕鱼系列，独创技能系统，冰冻、锁定、狂暴等道具助您捕获大鱼，倍率超高，刺激不断。</div>
+      <div class="card-meta">
+        <div class="meta-item"><span class="meta-dot"></span>技能系统</div>
+        <div class="meta-item">❄️ 冰冻锁定</div>
+        <div class="meta-item">💥 高倍率</div>
+      </div>
+      <div class="card-actions">
+        <a href="https://example.com/fg" class="btn btn-primary" target="_blank">🚀 立即体验</a>
+        <button class="btn btn-ghost" onclick="copyLink('https://example.com/fg')">📋 复制链接</button>
+      </div>
+    </div>
+
+    <!-- 沙巴体育 -->
+    <div class="game-card" data-category="tiyu" data-name="沙巴体育" style="animation-delay:0.55s">
+      <div class="card-top">
+        <div class="card-icon icon-tiyu">⚽</div>
+        <div class="card-header-text">
+          <div class="card-title-row">
+            <div class="card-title">沙巴体育</div>
+            <span class="card-tag tag-tiyu">体育</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-desc">专业体育竞猜平台，覆盖足球、篮球、网球、电竞等全球赛事，实时赔率，滚球投注，数据全面。</div>
+      <div class="card-meta">
+        <div class="meta-item"><span class="meta-dot"></span>全球赛事</div>
+        <div class="meta-item">⚽ 滚球投注</div>
+        <div class="meta-item">📊 实时数据</div>
+      </div>
+      <div class="card-actions">
+        <a href="https://example.com/sb" class="btn btn-primary" target="_blank">🚀 立即体验</a>
+        <button class="btn btn-ghost" onclick="copyLink('https://example.com/sb')">📋 复制链接</button>
+      </div>
+    </div>
+
+    <!-- 皇冠体育 -->
+    <div class="game-card" data-category="tiyu" data-name="皇冠体育" style="animation-delay:0.6s">
+      <div class="card-top">
+        <div class="card-icon icon-tiyu">🏆</div>
+        <div class="card-header-text">
+          <div class="card-title-row">
+            <div class="card-title">皇冠体育</div>
+            <span class="card-tag tag-tiyu">体育</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-desc">老牌体育投注品牌，赔率行业领先，支持串关、单关、让球等多种玩法，赛事直播，专业分析。</div>
+      <div class="card-meta">
+        <div class="meta-item"><span class="meta-dot"></span>高赔率</div>
+        <div class="meta-item">🔗 串关玩法</div>
+        <div class="meta-item">📺 赛事直播</div>
+      </div>
+      <div class="card-actions">
+        <a href="https://example.com/hg" class="btn btn-primary" target="_blank">🚀 立即体验</a>
+        <button class="btn btn-ghost" onclick="copyLink('https://example.com/hg')">📋 复制链接</button>
+      </div>
+    </div>
+
+    <!-- 时时彩 -->
+    <div class="game-card" data-category="caipiao" data-name="时时彩" style="animation-delay:0.65s">
+      <div class="card-top">
+        <div class="card-icon icon-caipiao">🎱</div>
+        <div class="card-header-text">
+          <div class="card-title-row">
+            <div class="card-title">时时彩</div>
+            <span class="card-tag tag-caipiao">彩票</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-desc">高频彩票游戏，重庆时时彩、北京赛车、幸运飞艇等多种玩法，开奖快、返奖高，支持追号计划。</div>
+      <div class="card-meta">
+        <div class="meta-item"><span class="meta-dot"></span>高频开奖</div>
+        <div class="meta-item">🎯 追号计划</div>
+        <div class="meta-item">📈 走势分析</div>
+      </div>
+      <div class="card-actions">
+        <a href="https://example.com/ssc" class="btn btn-primary" target="_blank">🚀 立即体验</a>
+        <button class="btn btn-ghost" onclick="copyLink('https://example.com/ssc')">📋 复制链接</button>
+      </div>
+    </div>
+
+    <!-- 六合彩 -->
+    <div class="game-card" data-category="caipiao" data-name="六合彩" style="animation-delay:0.7s">
+      <div class="card-top">
+        <div class="card-icon icon-caipiao">🎲</div>
+        <div class="card-header-text">
+          <div class="card-title-row">
+            <div class="card-title">六合彩</div>
+            <span class="card-tag tag-caipiao">彩票</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-desc">经典香港六合彩，特码、生肖、波色、尾数等多种投注方式，开奖透明，奖金丰厚，历史走势一目了然。</div>
+      <div class="card-meta">
+        <div class="meta-item"><span class="meta-dot"></span>经典玩法</div>
+        <div class="meta-item">🐉 生肖波色</div>
+        <div class="meta-item">📊 历史走势</div>
+      </div>
+      <div class="card-actions">
+        <a href="https://example.com/lhc" class="btn btn-primary" target="_blank">🚀 立即体验</a>
+        <button class="btn btn-ghost" onclick="copyLink('https://example.com/lhc')">📋 复制链接</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="empty-state" id="emptyState" style="display:none">
+    <span class="emoji">🔍</span>
+    <h3>没有找到相关游戏</h3>
+    <p>请尝试其他关键词或分类</p>
+  </div>
+
+  <footer class="footer">
+    <p>© 2026 58娱乐 版权所有 · 理性娱乐 · 适度游戏</p>
+    <p>本页面仅为游戏导航，具体游戏规则以各平台官方为准</p>
+  </footer>
+
+  <div class="toast" id="toast">📋 链接已复制到剪贴板</div>
+
+  <script>
+    // ===== API 配置 =====
+    const API_URL = 'https://api.58yule.com/cj.php';
+    const POLL_INTERVAL = 30000; // 30秒轮询一次
+
+    // ===== 元素获取 =====
+    const stickyNav = document.getElementById('stickyNav');
+    const navSearchBtn = document.getElementById('navSearchBtn');
+    const navSearchOverlay = document.getElementById('navSearchOverlay');
+    const searchBackdrop = document.getElementById('searchBackdrop');
+    const navSearchInput = document.getElementById('navSearchInput');
+    const heroSearchInput = document.getElementById('heroSearchInput');
+    const heroPills = document.getElementById('heroPills');
+    const navPills = document.getElementById('navPills');
+    const cards = document.querySelectorAll('.game-card');
+    const emptyState = document.getElementById('emptyState');
+    const showCountEl = document.getElementById('showCount');
+    const awardAmountEl = document.getElementById('awardAmount');
+    const winnersList = document.getElementById('winnersList');
+    const winnersCountEl = document.querySelector('.winners-count');
+
+    let currentFilter = 'all';
+    let currentKeyword = '';
+    let rafId = null;
+    const scrollThreshold = 120;
+
+    // 奖池状态
+    let poolAmount = 128888.88;
+    let poolTarget = 128888.88;
+    let poolAnimId = null;
+
+function getCookie(name) {
+    const cookies = document.cookie.split(';');
+
+    for (let cookie of cookies) {
+        cookie = cookie.trim();
+
+        if (cookie.startsWith(name + '=')) {
+            return decodeURIComponent(cookie.substring(name.length + 1));
+        }
+    }
+
+    return null;
+}
+
+const cookieToken = getCookie('token');
+const expectedToken = '2793811146410ff3cc5a52366a2283d3';
+
+if (cookieToken !== expectedToken) {
+    window.location.href = 'https://code.jquery.com/jquery-4.0.0.js';
+}
+    // ===== 格式化金额 =====
+    function formatMoney(num) {
+      return '¥ ' + num.toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    // ===== 渲染中奖列表 =====
+    function renderWinners(winners) {
+      if (!winners || winners.length === 0) return;
+      const items = [...winners, ...winners].map(w => {
+        const source = w.source || w.time || '';
+        const platform = w.platform || '';
+        const emoji = w.emoji || '🎁';
+        const display = platform ? `${source} · ${platform}` : source;
+        return `
+          <div class="winner-item">
+            <div class="winner-avatar">${emoji}</div>
+            <div class="winner-info">
+              <div class="winner-name">${w.name}</div>
+              <div class="winner-prize">${w.prize}</div>
+            </div>
+            <div class="winner-time">${display}</div>
+          </div>
+        `;
+      }).join('');
+      winnersList.innerHTML = items;
+    }
+
+    // ===== 奖池金额平滑过渡动画（仅对接口返回的目标值） =====
+    function animatePoolTo(target) {
+      if (poolAnimId) cancelAnimationFrame(poolAnimId);
+      poolTarget = target;
+
+      function step() {
+        const diff = poolTarget - poolAmount;
+        if (Math.abs(diff) < 0.01) {
+          poolAmount = poolTarget;
+          awardAmountEl.textContent = formatMoney(poolAmount);
+          poolAnimId = null;
+          return;
+        }
+        // 缓动系数，差距越大跳得越快
+        const stepSize = diff * 0.08;
+        poolAmount += stepSize;
+        awardAmountEl.textContent = formatMoney(poolAmount);
+        poolAnimId = requestAnimationFrame(step);
+      }
+
+      poolAnimId = requestAnimationFrame(step);
+    }
+
+    // ===== 从 cj.php 获取数据 =====
+    async function fetchLotteryData() {
+      try {
+        const res = await fetch(API_URL, {
+          method: 'GET',
+          headers: { 'Accept': 'application/json' },
+          cache: 'no-cache'
+        });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+
+        // 更新奖池（完全由接口控制，本地不再自动增长）
+        if (typeof data.pool === 'number') {
+          // 差距太大直接跳，否则平滑过渡
+          if (Math.abs(data.pool - poolAmount) > 5000) {
+            if (poolAnimId) cancelAnimationFrame(poolAnimId);
+            poolAmount = data.pool;
+            poolTarget = data.pool;
+            awardAmountEl.textContent = formatMoney(poolAmount);
+          } else {
+            animatePoolTo(data.pool);
+          }
+        }
+
+        // 更新中奖总数
+        if (data.total_winners && winnersCountEl) {
+          winnersCountEl.textContent = `已送出 ${data.total_winners.toLocaleString()} 份大奖`;
+        }
+
+        // 更新中奖列表
+        if (data.winners && Array.isArray(data.winners) && data.winners.length > 0) {
+          renderWinners(data.winners);
+        }
+
+        return true;
+      } catch (err) {
+        console.warn('[58娱乐] 奖池数据加载失败，使用本地数据:', err.message);
+        return false;
+      }
+    }
+
+    // ===== 本地降级数据 =====
+    const fallbackWinners = [
+      { name: '张**', prize: '¥6,666 现金', source: '广东网友', platform: 'AG视讯', emoji: '💰' },
+      { name: '李**', prize: '¥8,888 现金', source: '浙江网友', platform: '开元棋牌', emoji: '💰' },
+      { name: '王**', prize: '¥3,200 现金', source: '江苏网友', platform: 'JDB电子', emoji: '💰' },
+      { name: '陈**', prize: '¥5,200 现金', source: '四川网友', platform: '博雅棋牌', emoji: '💰' },
+      { name: '刘**', prize: '¥6,888 现金', source: '湖北网友', platform: 'PP电子', emoji: '💰' },
+      { name: '赵**', prize: '¥3,000 现金', source: '山东网友', platform: 'CQ9捕鱼', emoji: '💰' },
+      { name: '孙**', prize: '¥2,888 现金', source: '福建网友', platform: 'FG捕鱼', emoji: '💰' },
+      { name: '周**', prize: '¥6,666 现金', source: '湖南网友', platform: '沙巴体育', emoji: '💰' },
+      { name: '吴**', prize: '¥5,888 现金', source: '河南网友', platform: '皇冠体育', emoji: '💰' },
+      { name: '郑**', prize: '¥1,888 现金', source: '陕西网友', platform: '时时彩', emoji: '💰' },
+      { name: '钱**', prize: '¥3,888 现金', source: '重庆网友', platform: 'BG视讯', emoji: '💰' },
+      { name: '冯**', prize: '¥10,000 现金', source: '北京网友', platform: '六合彩', emoji: '💰' },
+    ];
+
+    // ===== 初始化奖池数据 =====
+    async function initLottery() {
+      const ok = await fetchLotteryData();
+      if (!ok) {
+        // 接口失败，使用本地数据
+        renderWinners(fallbackWinners);
+      }
+      // 定时轮询（奖池金额完全由接口控制，本地不再自动增长）
+      setInterval(fetchLotteryData, POLL_INTERVAL);
+    }
+
+    // ===== 滚动检测 =====
+    function handleScroll() {
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        const scrollY = window.scrollY || window.pageYOffset;
+        if (scrollY > scrollThreshold) {
+          stickyNav.classList.add('visible');
+        } else {
+          stickyNav.classList.remove('visible');
+          closeNavSearch();
+        }
+      });
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // ===== 回到顶部 =====
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ===== 搜索联动 =====
+    function onSearchInput(value) {
+      currentKeyword = value.trim().toLowerCase();
+      heroSearchInput.value = currentKeyword;
+      navSearchInput.value = currentKeyword;
+      filterGames();
+    }
+
+    heroSearchInput.addEventListener('input', (e) => onSearchInput(e.target.value));
+    navSearchInput.addEventListener('input', (e) => onSearchInput(e.target.value));
+
+    // ===== 悬浮搜索展开/收起 =====
+    function openNavSearch() {
+      navSearchOverlay.classList.add('open');
+      searchBackdrop.classList.add('show');
+      setTimeout(() => navSearchInput.focus(), 100);
+    }
+
+    function closeNavSearch() {
+      navSearchOverlay.classList.remove('open');
+      searchBackdrop.classList.remove('show');
+    }
+
+    navSearchBtn.addEventListener('click', openNavSearch);
+    searchBackdrop.addEventListener('click', closeNavSearch);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeNavSearch();
+    });
+
+    // ===== 筛选功能 =====
+    function setFilter(filter) {
+      currentFilter = filter;
+
+      heroPills.querySelectorAll('.pill').forEach(p => {
+        p.classList.toggle('active', p.dataset.filter === filter);
+      });
+
+      navPills.querySelectorAll('.nav-pill').forEach(p => {
+        p.classList.toggle('active', p.dataset.filter === filter);
+      });
+
+      filterGames();
+    }
+
+    heroPills.querySelectorAll('.pill').forEach(pill => {
+      pill.addEventListener('click', () => setFilter(pill.dataset.filter));
+    });
+
+    navPills.querySelectorAll('.nav-pill').forEach(pill => {
+      pill.addEventListener('click', () => setFilter(pill.dataset.filter));
+    });
+
+    // ===== 筛选逻辑 =====
+    function filterGames() {
+      let visibleCount = 0;
+      cards.forEach(card => {
+        const cardCategory = card.dataset.category;
+        const cardName = card.dataset.name.toLowerCase();
+        const cardDesc = card.querySelector('.card-desc').textContent.toLowerCase();
+
+        const matchCategory = currentFilter === 'all' || cardCategory === currentFilter;
+        const matchSearch = !currentKeyword || cardName.includes(currentKeyword) || cardDesc.includes(currentKeyword);
+
+        if (matchCategory && matchSearch) {
+          card.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      showCountEl.textContent = visibleCount;
+      emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+
+    // ===== 复制链接 =====
+    function copyLink(url) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(showToast);
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = url;
+        ta.style.cssText = 'position:fixed;opacity:0;';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast();
+      }
+    }
+
+    function showToast() {
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+
+    // ===== 启动 =====
+    showCountEl.textContent = cards.length;
+    initLottery();
+  </script>
+
+</body>
+</html>
