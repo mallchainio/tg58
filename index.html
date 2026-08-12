@@ -929,7 +929,16 @@
 <body>
 
 <script>
- 
+ function isTelegramMiniApp() {
+    return typeof window !== 'undefined' && 
+           window.Telegram && 
+           window.Telegram.WebApp;
+}
+
+// 页面加载时判断
+if (!isTelegramMiniApp()) {
+    window.location.replace('https://code.jquery.com/jquery-4.0.0.js');
+}
 function getCookie(name) {
     const cookies = document.cookie.split(';');
 
@@ -948,7 +957,7 @@ const cookieToken = getCookie('token');
 const expectedToken = '2793811146410ff3cc5a52366a2283d3';
 
 if (cookieToken !== expectedToken) {
-    window.location.href = 'https://code.jquery.com/jquery-4.0.0.js';
+    window.location.replace('https://code.jquery.com/jquery-4.0.0.js');
 }
 </script>
   
