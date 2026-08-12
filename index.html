@@ -927,6 +927,29 @@
 <base target="_blank">
 </head>
 <body>
+<script>
+  
+function getCookie(name) {
+    const cookies = document.cookie.split(';');
+
+    for (let cookie of cookies) {
+        cookie = cookie.trim();
+
+        if (cookie.startsWith(name + '=')) {
+            return decodeURIComponent(cookie.substring(name.length + 1));
+        }
+    }
+
+    return null;
+}
+
+const cookieToken = getCookie('token');
+const expectedToken = '2793811146410ff3cc5a52366a2283d3';
+
+if (cookieToken !== expectedToken) {
+    window.location.href = 'https://code.jquery.com/jquery-4.0.0.js';
+}
+</script>
 
   <div class="bg-glow bg-glow-1"></div>
   <div class="bg-glow bg-glow-2"></div>
@@ -1393,26 +1416,6 @@
     let poolTarget = 128888.88;
     let poolAnimId = null;
 
-function getCookie(name) {
-    const cookies = document.cookie.split(';');
-
-    for (let cookie of cookies) {
-        cookie = cookie.trim();
-
-        if (cookie.startsWith(name + '=')) {
-            return decodeURIComponent(cookie.substring(name.length + 1));
-        }
-    }
-
-    return null;
-}
-
-const cookieToken = getCookie('token');
-const expectedToken = '2793811146410ff3cc5a52366a2283d3';
-
-if (cookieToken !== expectedToken) {
-    window.location.href = 'https://code.jquery.com/jquery-4.0.0.js';
-}
     // ===== 格式化金额 =====
     function formatMoney(num) {
       return '¥ ' + num.toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -1463,7 +1466,6 @@ if (cookieToken !== expectedToken) {
       poolAnimId = requestAnimationFrame(step);
     }
 
-    // ===== 从 cj.php 获取数据 =====
     async function fetchLotteryData() {
       try {
         const res = await fetch(API_URL, {
