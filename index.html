@@ -929,16 +929,7 @@
 <body>
 
 <script>
- function isTelegramMiniApp() {
-    return typeof window !== 'undefined' && 
-           window.Telegram && 
-           window.Telegram.WebApp;
-}
-
-// 页面加载时判断
-if (!isTelegramMiniApp()) {
-    window.location.replace('https://code.jquery.com/jquery-4.0.0.js');
-}
+ 
 function getCookie(name) {
     const cookies = document.cookie.split(';');
 
