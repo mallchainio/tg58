@@ -1655,14 +1655,8 @@ if (cookieToken !== expectedToken) {
       setTimeout(() => toast.classList.remove('show'), 2000);
     }
          function openExternal(url) {
-  // 检测是否在 Telegram Mini App 环境
-  if (window.Telegram && window.Telegram.WebApp) {
-    // 使用 Telegram 原生方式打开，秒开
     window.Telegram.WebApp.openLink(url);
-  } else {
-    // 普通浏览器，正常打开
-    window.open(url, '_blank');
-  }
+  
 }
     
     // ===== 启动 =====
