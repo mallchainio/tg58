@@ -925,6 +925,7 @@
     }
   </style>
 <base target="_blank">
+<base target="_blank">
 </head>
 <body>
 
@@ -994,7 +995,7 @@ if (cookieToken !== expectedToken) {
             使用 <strong>58娱乐推广链接</strong> 注册任意平台，即可自动获得抽奖资格。<br>
             每周开奖，奖池实时累积，越早参与中奖几率越高！
           </div>
-          <a href="https://t.me/YuLe58Bot?start=_tgr_FbnmdSU2NTY0" class="award-btn" target="_blank">🎁 立即参与抽奖</a>
+          <button class="award-btn" onclick="openLink('https://t.me/YuLe58Bot?start=_tgr_FbnmdSU2NTY0')">🎁 立即参与抽奖</button>
  
         </div>
         <!-- 右侧：中奖用户滚动列表 -->
@@ -1653,10 +1654,21 @@ if (cookieToken !== expectedToken) {
       setTimeout(() => toast.classList.remove('show'), 2000);
     }
     
+    // ===== 打开链接（适配 Telegram Mini App）=====
+    function openLink(url) {
+      if (window.Telegram && window.Telegram.WebApp) {
+        if (url.indexOf('t.me/') !== -1 || url.indexOf('telegram.me/') !== -1) {
+          window.Telegram.WebApp.openTelegramLink(url);
+          return;
+        }
+      }
+      window.open(url, '_blank');
+    }
+
     // ===== 启动 =====
     showCountEl.textContent = cards.length;
     initLottery();
   </script>
 
 </body>
-</html>
+        </html>
