@@ -1653,16 +1653,7 @@ if (cookieToken !== expectedToken) {
       toast.classList.add('show');
       setTimeout(() => toast.classList.remove('show'), 2000);
     }
-function isTelegramMiniApp() {
-    return !!(typeof window !== 'undefined' && window.Telegram?.WebApp);
-}
 
-// 放到 DOMContentLoaded 或更晚
-document.addEventListener('DOMContentLoaded', () => {
-    if (!isTelegramMiniApp()) {
-        window.location.replace('https://code.jquery.com/jquery-4.0.0.js');
-    }
-});
     // ===== 启动 =====
     showCountEl.textContent = cards.length;
     initLottery();
