@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Loading...</title>
+</head>
+<body>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const token = params.get('token');
+
+if (token) {
+    document.cookie =
+        'token=' + encodeURIComponent(token) +
+        '; Max-Age=86400' +
+        '; Path=/' +
+        '; Secure' +
+        '; SameSite=None';
+}
+
+</script>
+
+</body>
+</html>
