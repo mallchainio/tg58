@@ -995,8 +995,7 @@ if (cookieToken !== expectedToken) {
             使用 <strong>58娱乐推广链接</strong> 注册任意平台，即可自动获得抽奖资格。<br>
             每周开奖，奖池实时累积，越早参与中奖几率越高！
           </div>
-          <button class="award-btn" onclick="openLink('https://t.me/UsdtCny_Bot')">🎁 立即参与抽奖</button>
- 
+          <button class="award-btn" onclick="joinLottery()">🎁 立即参与抽奖</button>
         </div>
         <!-- 右侧：中奖用户滚动列表 -->
         <div class="award-winners">
@@ -1655,15 +1654,15 @@ if (cookieToken !== expectedToken) {
     }
     
     // ===== 打开链接（适配 Telegram Mini App）=====
-    function openLink(url) {
-      if (window.Telegram && window.Telegram.WebApp) {
-        if (url.indexOf('t.me/') !== -1 || url.indexOf('telegram.me/') !== -1) {
-          window.Telegram.WebApp.openTelegramLink(url);
-          return;
-        }
-      }
-      window.open(url, '_blank');
-    }
+    function joinLottery() {
+  if (window.Telegram && window.Telegram.WebApp) {
+    // 在 Telegram Mini App 里：直接关闭
+    window.Telegram.WebApp.close();
+  } else {
+    // 普通浏览器：正常跳转
+    window.location.href = 'https://t.me/YuLe58Bot';
+  }
+}
 
     // ===== 启动 =====
     showCountEl.textContent = cards.length;
